@@ -226,7 +226,7 @@ habitat desiccation on larval development, survival, and wing morph
 determination in four Canadian water strider species
 (Hemiptera: Gerridae).
 
-Target journal: Ecological Entomology
+Target journal: 
 
 
 ----------------------------------------------------------------------
