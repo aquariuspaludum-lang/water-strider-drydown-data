@@ -84,9 +84,9 @@ for (sp in names(np_files)) {
   print(anova(model_null, model_full))
 
   emm <- emmeans(model_full, ~ Condition)
-  cat("\nPost-hoc vs Control (Bonferroni):\n")
+  cat("\nPost-hoc vs Control (Dunnett):\n")
   print(summary(contrast(emm, method = "trt.vs.ctrl", ref = 1),
-                adjust = "bonferroni"))
+                adjust = "dunnett"))
 
   means <- df %>%
     group_by(Condition) %>%
@@ -194,11 +194,11 @@ for (sp in names(np_files)) {
 
   # B-3: Post-hoc for significant instars
   if (length(instar_results) > 0) {
-    cat("\n[B-3] Post-hoc vs Control (Bonferroni):\n")
+    cat("\n[B-3] Post-hoc vs Control (Dunnett):\n")
     for (inst_key in names(instar_results)) {
       emm    <- emmeans(instar_results[[inst_key]], ~ Condition)
       ph_sum <- summary(contrast(emm, method = "trt.vs.ctrl", ref = 1),
-                        adjust = "bonferroni")
+                        adjust = "dunnett")
       if (any(ph_sum$p.value < 0.05, na.rm = TRUE)) {
         cat(sprintf("\n  Instar %s:\n", inst_key))
         print(ph_sum)
@@ -226,7 +226,7 @@ for (sp in names(np_files)) {
 # ============================================================
 
 cat("\n====================================================\n")
-cat("Analysis C: Wing morph (Logistic regression)\n")
+cat("Analysis C: Wing morph (GLM, binomial)\n")
 cat("====================================================\n")
 
 df_wing_wide <- df_wing %>%
@@ -253,8 +253,8 @@ for (sp in c("G_buenoi", "A_remigis")) {
   print(anova(model_grp, model_add, test = "LRT"))
 
   emm <- emmeans(model_add, ~ Group)
-  cat("\nGroup pairwise contrasts (Bonferroni):\n")
-  print(summary(contrast(emm, method = "pairwise"), adjust = "bonferroni"))
+  cat("\nGroup pairwise contrasts (Holm):\n")
+  print(summary(contrast(emm, method = "pairwise"), adjust = "holm"))
 
   cat("\nLW proportion (%) — Table 4:\n")
   print(df_sp %>% mutate(LW_pct = round(LW / (LW + SW) * 100, 1)))
@@ -311,9 +311,9 @@ for (info in list(list(sp = "G_buenoi",  df = df_preov_bu),
   print(means)
 
   emm <- emmeans(model_add, ~ Condition)
-  cat("\nCondition pairwise vs Control (Bonferroni):\n")
+  cat("\nCondition pairwise vs Control (Dunnett):\n")
   print(summary(contrast(emm, method = "trt.vs.ctrl", ref = 1),
-                adjust = "bonferroni"))
+                adjust = "dunnett"))
 }
 
 
